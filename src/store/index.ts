@@ -6,7 +6,9 @@ export default createStore({
     tasks: []
   },
   getters: {
-
+    getTasks: (state) => {
+      return state.tasks;
+    }
   },
   mutations: {
 
