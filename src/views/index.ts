@@ -17,7 +17,6 @@ export default defineComponent({
         isModalOpened: boolean,
         editedTask: Task|null
     } {
-
         const statuses = [
             {
                 id: 1,
@@ -54,8 +53,9 @@ export default defineComponent({
             taskData: {
                 id: 0,
                 title: '',
+                status_id: 1,
                 description: '',
-                statut: statuses[0] as Status,
+                status: statuses[0] as Status,
                 startDate: new Date(),
                 endDate: new Date()
             },
@@ -74,8 +74,9 @@ export default defineComponent({
             return {
                 id: 0,
                 title: '',
+                status_id: this.statuses[0].id,
                 description: '',
-                statut: this.statuses[0],
+                status: this.statuses[0],
                 startDate: new Date(),
                 endDate: new Date()
             };
@@ -92,8 +93,7 @@ export default defineComponent({
         },
 
         submitTaskForm(): void {
-            console.log(this.isEditing);
-            this.taskData.statut = this.statuses.find(status => status.id === this.taskData.statut.id) as Status;
+            this.taskData.status = this.statuses.find(status => status.id === this.taskData.status_id) as Status;
             if(this.isEditing) {
                 console.log(this.taskData);
             }else{
@@ -102,6 +102,7 @@ export default defineComponent({
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 //@ts-ignore
                 this.$store.commit('addTask', this.taskData);
+                debugger;
             }
 
             this.isModalOpened = false;

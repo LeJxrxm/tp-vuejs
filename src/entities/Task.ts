@@ -4,7 +4,8 @@ export type Task = {
     id: number,
     title: string,
     description: string,
+    status_id: number,
     startDate: Date,
     endDate: Date,
-    statut: Status
+    status: Status
 };

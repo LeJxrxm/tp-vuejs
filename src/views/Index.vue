@@ -15,7 +15,7 @@
           <v-row>
             <v-col cols="12" lg="4" order="last" order-lg="first">
               <v-select
-                  v-model="taskData.statut"
+                  v-model="taskData.status_id"
                   :items="statuses"
                   item-title="titre"
                   item-value="id"
@@ -42,7 +42,6 @@
               </v-text-field>
             </v-col>
           </v-row>
-          <hr>
           <v-text-field
               v-model="taskData.titre"
               label="Titre"
@@ -90,7 +89,7 @@
           <v-card-title class="text-h5">{{ status.titre }}</v-card-title>
           <hr>
           <div class="d-flex flex-column">
-            <div v-for="task in tasks.filter(task => task.statut.id === status.id)">
+            <div v-for="task in tasks.filter(task => task.status_id === status.id)">
               yo
             </div>
           </div>
