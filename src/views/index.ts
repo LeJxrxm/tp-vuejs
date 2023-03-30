@@ -11,9 +11,10 @@ export default defineComponent({
     data(): {
         tasks: Array<Task>,
         isEditing: boolean,
-        taskData: Task
+        statuses: Array<Status>,
+        taskData: Task,
+        isModalOpened: boolean
     } {
-        const tasks = this.getTasks();
 
         const statuses = {
             TODO: ({
@@ -43,7 +44,7 @@ export default defineComponent({
         }
 
         return {
-            tasks: tasks,
+            tasks: [],
             isEditing: false,
             taskData: {
                 id: 0,
@@ -52,7 +53,40 @@ export default defineComponent({
                 statut: statuses.TODO,
                 startDate: new Date(),
                 endDate: new Date()
-            }
+            },
+            statuses: Object.values(statuses),
+            isModalOpened: false
+        }
+    },
+
+    beforeMount() {
+        this.tasks = this.getTasks;
+    },
+
+    methods: {
+        _createEmptyTask(): Task {
+            return {
+                id: 0,
+                title: '',
+                description: '',
+                statut: this.statuses[0],
+                startDate: new Date(),
+                endDate: new Date()
+            };
+        },
+
+        _resolveTask(id: number): Task {
+            return this.tasks.find(task => task.id === id) as Task;
+        },
+
+        setupCreateTask(): void {
+            this.taskData = this._createEmptyTask();
+            this.isEditing = false;
+            this.isModalOpened = true;
+        },
+
+        submitTaskForm(): void {
+            console.log(this.taskData);
         }
     }
 })
