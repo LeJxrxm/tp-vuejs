@@ -11,7 +11,11 @@ export default createStore({
     }
   },
   mutations: {
-
+      addTask(state, task: Task) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        state.tasks.push(task);
+      }
   },
   actions: {
 

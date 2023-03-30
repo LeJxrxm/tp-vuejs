@@ -2,6 +2,7 @@ import {defineComponent} from "vue";
 import {mapGetters} from "vuex";
 import {Task} from "@/entities/Task";
 import {Status} from "@/entities/Status";
+
 export default defineComponent({
     name: 'Index',
     computed: {
@@ -13,35 +14,39 @@ export default defineComponent({
         isEditing: boolean,
         statuses: Array<Status>,
         taskData: Task,
-        isModalOpened: boolean
+        isModalOpened: boolean,
+        editedTask: Task|null
     } {
 
-        const statuses = {
-            TODO: ({
+        const statuses = [
+            {
                 id: 1,
                 titre: 'A faire',
                 isStarted: false,
                 isFinished: false,
                 textColor: '#000',
                 backgroundColor: '#ececec',
-            } as Status),
-            IN_PROGRESS: ({
+                tasks: []
+            },
+            {
                 id: 2,
                 titre: 'En cours',
                 isStarted: true,
                 isFinished: false,
                 textColor: '#fff',
                 backgroundColor: '#70b0f6',
-            } as Status),
-            DONE: ({
+                tasks: []
+            },
+            {
                 id: 3,
                 titre: 'Terminé',
                 isStarted: true,
                 isFinished: true,
                 textColor: '#fff',
                 backgroundColor: '#70f6b0',
-            } as Status)
-        }
+                tasks: []
+            }
+        ];
 
         return {
             tasks: [],
@@ -50,12 +55,13 @@ export default defineComponent({
                 id: 0,
                 title: '',
                 description: '',
-                statut: statuses.TODO,
+                statut: statuses[0] as Status,
                 startDate: new Date(),
                 endDate: new Date()
             },
-            statuses: Object.values(statuses),
-            isModalOpened: false
+            statuses: statuses,
+            isModalOpened: false,
+            editedTask: null
         }
     },
 
@@ -86,7 +92,19 @@ export default defineComponent({
         },
 
         submitTaskForm(): void {
-            console.log(this.taskData);
+            console.log(this.isEditing);
+            this.taskData.statut = this.statuses.find(status => status.id === this.taskData.statut.id) as Status;
+            if(this.isEditing) {
+                console.log(this.taskData);
+            }else{
+                this.taskData.id = this.tasks.length + 1;
+                this.tasks.push(this.taskData);
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                //@ts-ignore
+                this.$store.commit('addTask', this.taskData);
+            }
+
+            this.isModalOpened = false;
         }
     }
 })

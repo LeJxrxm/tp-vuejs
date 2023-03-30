@@ -13,31 +13,46 @@
       <v-card-text>
         <v-form ref="form">
           <v-row>
-            <v-col cols="12" lg="8" order="last" order-lg="first">
-              <v-text-field
-                  v-model="taskData.titre"
-                  label="Titre"
+            <v-col cols="12" lg="4" order="last" order-lg="first">
+              <v-select
+                  v-model="taskData.statut"
+                  :items="statuses"
+                  item-title="titre"
+                  item-value="id"
+                  label="Status"
                   required
-              ></v-text-field>
+              ></v-select>
             </v-col>
             <v-col cols="12" lg="4" order="first" order-lg="last">
-              <v-date-picker></v-date-picker>
+              <v-text-field
+                  v-model="taskData.startDate"
+                  label="Date de début"
+                  type="date"
+                  required
+              >
+              </v-text-field>
+            </v-col>
+            <v-col cols="12" lg="4" order="first" order-lg="last">
+              <v-text-field
+                  v-model="taskData.endDate"
+                  label="Date de fin"
+                  type="date"
+                  required
+              >
+              </v-text-field>
             </v-col>
           </v-row>
-
+          <hr>
+          <v-text-field
+              v-model="taskData.titre"
+              label="Titre"
+              required
+          ></v-text-field>
           <v-textarea
               v-model="taskData.description"
               label="Description"
               required
           ></v-textarea>
-          <v-select
-              v-model="taskData.status"
-              :items="statuses"
-              item-text="titre"
-              item-value="id"
-              label="Status"
-              required
-          ></v-select>
         </v-form>
       </v-card-text>
       <v-card-actions class="justify-end">
@@ -73,6 +88,12 @@
             max-width="344"
         >
           <v-card-title class="text-h5">{{ status.titre }}</v-card-title>
+          <hr>
+          <div class="d-flex flex-column">
+            <div v-for="task in tasks.filter(task => task.statut.id === status.id)">
+              yo
+            </div>
+          </div>
         </v-card>
       </v-col>
     </v-row>
