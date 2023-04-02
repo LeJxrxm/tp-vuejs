@@ -2,9 +2,13 @@ import {defineComponent} from "vue";
 import {mapGetters} from "vuex";
 import {Task} from "@/entities/Task";
 import {Status} from "@/entities/Status";
+import TaskKanban from "@/components/TaskKanban/TaskKanban.vue";
 
 export default defineComponent({
     name: 'Index',
+    components: {
+        TaskKanban
+    },
     computed: {
         ...mapGetters(['getTasks'])
     },
@@ -86,10 +90,20 @@ export default defineComponent({
             return this.tasks.find(task => task.id === id) as Task;
         },
 
+        setupEditTask(id: number): void {
+            this.taskData = this._resolveTask(id);
+            this.isEditing = true;
+            this.isModalOpened = true;
+        },
+
         setupCreateTask(): void {
             this.taskData = this._createEmptyTask();
             this.isEditing = false;
             this.isModalOpened = true;
+        },
+
+        getTasksByStatus(status: Status): Array<Task> {
+            return this.tasks.filter(task => task.status_id === status.id);
         },
 
         submitTaskForm(): void {
@@ -98,11 +112,9 @@ export default defineComponent({
                 console.log(this.taskData);
             }else{
                 this.taskData.id = this.tasks.length + 1;
-                this.tasks.push(this.taskData);
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 //@ts-ignore
                 this.$store.commit('addTask', this.taskData);
-                debugger;
             }
 
             this.isModalOpened = false;

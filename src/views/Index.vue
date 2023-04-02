@@ -78,7 +78,7 @@
         Ajouter
       </v-btn>
     </div>
-    <v-row justify="space-around">
+    <v-row justify="space-around" class="">
       <v-col cols="12" md="6" lg="4" v-for="status in statuses">
         <v-card
             :color="status.color"
@@ -87,13 +87,14 @@
             max-width="344"
         >
           <v-card-title class="text-h5">{{ status.titre }}</v-card-title>
-          <hr>
-          <div class="d-flex flex-column">
-            <div v-for="task in tasks.filter(task => task.status_id === status.id)">
-              yo
-            </div>
-          </div>
         </v-card>
+      </v-col>
+    </v-row>
+    <v-row justify="space-around">
+      <v-col cols="12" md="6" lg="4" v-for="status in statuses">
+        <template v-for="task in getTasksByStatus(status)">
+          <TaskKanban :task="task" @delete-task="deleteTask" @edit="setupEditTask"></TaskKanban>
+        </template>
       </v-col>
     </v-row>
   </v-container>
