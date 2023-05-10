@@ -108,6 +108,8 @@ export default defineComponent({
 
         submitTaskForm(): void {
             this.taskData.status = this.statuses.find(status => status.id === this.taskData.status_id) as Status;
+            this.taskData.startDate = new Date(this.taskData.startDate);
+            this.taskData.endDate = new Date(this.taskData.endDate);
             if(this.isEditing) {
                 console.log(this.taskData);
             }else{
