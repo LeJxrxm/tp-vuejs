@@ -72,31 +72,44 @@
 
   <v-container>
     <h1 class="text-center">TP VUE JS</h1>
-    <div class="d-flex justify-end">
+    <div class="d-flex justify-space-between my-2">
+      <v-tabs
+          v-model="currentView"
+          color="deep-purple-accent-4"
+      >
+        <v-tab value="kanban">Kanban</v-tab>
+        <v-tab value="calendar">Calendrier</v-tab>
+      </v-tabs>
       <v-btn @click="setupCreateTask" color="primary" class="mb-2">
         <v-icon>mdi-plus</v-icon>
         Ajouter
       </v-btn>
     </div>
-    <v-row justify="space-around" class="">
-      <v-col cols="12" md="6" lg="4" v-for="status in statuses">
-        <v-card
-            :color="status.color"
-            class="mx-auto"
-            elevation="15"
-            max-width="344"
-        >
-          <v-card-title class="text-h5">{{ status.titre }}</v-card-title>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row justify="space-around">
-      <v-col cols="12" md="6" lg="4" v-for="status in statuses">
-        <template v-for="task in getTasksByStatus(status)">
-          <TaskKanban :task="task" @delete-task="deleteTask" @edit="setupEditTask"></TaskKanban>
-        </template>
-      </v-col>
-    </v-row>
+    <v-window v-model="currentView">
+      <v-window-item value="kanban" style="min-height: 100vh; padding: 10px 0;">
+        <v-row justify="space-around" class="">
+          <v-col cols="12" md="6" lg="4" v-for="status in statuses">
+            <v-card
+                class="mx-auto"
+                elevation="0"
+                max-width="344"
+            >
+              <v-card-title class="text-h5">{{ status.titre }}</v-card-title>
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-row justify="space-around">
+          <v-col cols="12" md="6" lg="4" v-for="status in statuses">
+            <template v-for="task in getTasksByStatus(status)">
+              <TaskKanban :task="task" @edit="setupEditTask"></TaskKanban>
+            </template>
+          </v-col>
+        </v-row>
+      </v-window-item>
+      <v-window-item value="calendar">
+        <Calendar />
+      </v-window-item>
+    </v-window>
   </v-container>
 </template>
 

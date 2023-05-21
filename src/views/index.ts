@@ -1,13 +1,17 @@
-import {defineComponent} from "vue";
+import {defineComponent, Ref} from "vue";
 import {mapGetters} from "vuex";
 import {Task} from "@/entities/Task";
 import {Status} from "@/entities/Status";
 import TaskKanban from "@/components/TaskKanban/TaskKanban.vue";
+import Calendar from "@/components/Calendar/Calendar.vue";
+import {CalendarApi} from "@fullcalendar/core";
+import {CalendarContext} from "@fullcalendar/core/internal";
 
 export default defineComponent({
     name: 'Index',
     components: {
-        TaskKanban
+        TaskKanban,
+        Calendar
     },
     computed: {
         ...mapGetters(['getTasks'])
@@ -19,7 +23,8 @@ export default defineComponent({
         statuses: Array<Status>,
         taskData: Task,
         isModalOpened: boolean,
-        editedTask: Task|null
+        editedTask: Task|null,
+        currentView: string
     } {
         const statuses = [
             {
@@ -65,12 +70,17 @@ export default defineComponent({
             },
             statuses: statuses,
             isModalOpened: false,
-            editedTask: null
+            editedTask: null,
+            currentView: 'kanban'
         }
     },
 
     beforeMount() {
         this.tasks = this.getTasks;
+    },
+
+    mounted() {
+        debugger;
     },
 
     methods: {
@@ -119,7 +129,13 @@ export default defineComponent({
                 this.$store.commit('addTask', this.taskData);
             }
 
+            this.tasks.sort((a: Task, b: Task) => a.startDate > b.startDate ? 1 : -1);
             this.isModalOpened = false;
+        }
+    },
+    watch: {
+        currentView() {
+            const calendarApi = (this.$refs.calendar as Ref<CalendarApi>);
         }
     }
 })
