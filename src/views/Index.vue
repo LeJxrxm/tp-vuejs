@@ -78,7 +78,7 @@
           color="deep-purple-accent-4"
       >
         <v-tab value="kanban">Kanban</v-tab>
-        <v-tab value="calendar">Calendrier</v-tab>
+        <v-tab disabled value="calendar">Calendrier</v-tab>
       </v-tabs>
       <v-btn @click="setupCreateTask" color="primary" class="mb-2">
         <v-icon>mdi-plus</v-icon>
